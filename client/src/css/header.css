@@ -6,6 +6,7 @@
 .header-logo {
     margin-left: 12%;
     line-height: 0;
+    cursor: pointer;
 }
 
 .header-logo-details {
