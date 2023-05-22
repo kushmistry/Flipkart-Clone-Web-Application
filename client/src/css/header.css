@@ -1,0 +1,14 @@
+.headerAppBar {
+    background-color: #2874f0;
+    height: 55px;
+}
+
+.header-logo {
+    margin-left: 12%;
+    line-height: 0;
+}
+
+.header-logo-details {
+    font-size: 10px !important;
+    font-style: italic;
+}

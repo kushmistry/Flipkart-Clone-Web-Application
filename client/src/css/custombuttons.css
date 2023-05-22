@@ -1,0 +1,27 @@
+.custom-btns {
+    display: flex;
+    align-items: center;
+    width: 40%;
+    margin-left: 20px;
+    justify-content: space-between;
+}
+
+.login-btn {
+    background-color: #fff !important;
+    height: 28px;
+    width: 120px;
+    color: #2874f0 !important;
+    border-radius: 2px !important;
+    font-weight: bold !important;
+    text-transform: none !important;
+    box-shadow: none !important;
+}
+
+.box-inline {
+    display: flex;
+}
+
+.custom-text {
+    font-size: 15px !important;
+    font-weight: bold !important;
+}
