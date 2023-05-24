@@ -5,7 +5,7 @@ const Navbar = ({}) => {
   return (
     <>
       <Box
-        clasName="navbar-container"
+        className="navbar-container"
         style={{
           display: "flex",
           justifyContent: "space-between",
@@ -15,7 +15,7 @@ const Navbar = ({}) => {
       >
         {navData.map((item) => {
           return (
-            <Box
+            <Box key={item.id}
               style={{
                 cursor: "pointer",
                 display: "flex",

@@ -35,7 +35,7 @@ const Banner = ({}) => {
         containerClass="carousel-container"
       >
         {bannerData.map((item) => {
-          return <img className="carousel-img" src={item.url} alt="Carousel" />;
+          return <img key={item.id} className="carousel-img" src={item.url} alt="Carousel" />;
         })}
       </Carousel>
     </Box>
