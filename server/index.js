@@ -1,6 +1,7 @@
 import express from 'express';
 import connection from './database/db.js';
 import dotenv from 'dotenv';
+import DefaultData from './default.js';
 
 const app = express();
 
@@ -14,3 +15,5 @@ const PASSWORD = process.env.DB_PASSWORD;
 connection(USERNAME, PASSWORD);
 
 app.listen(PORT, () => console.log(`server is running succesfully on PORT ${PORT}`));
+
+DefaultData();
