@@ -23,7 +23,7 @@ const SignIn = ({ open, setOpen }) => {
     setToggleLogin(false);
     setLeftPart({
       header: "Looks like you're new here!",
-      description: "Sign up with your mobile number to get started",
+      description: "Sign up with your personal details to get started",
     });
   };
 
@@ -38,6 +38,8 @@ const SignIn = ({ open, setOpen }) => {
 
   const signupHandler = async () => {
     const response = await authenticateUser(signupDetails);
+    if(!response) return;
+    dialogBoxHandler();
   }
 
   return (
