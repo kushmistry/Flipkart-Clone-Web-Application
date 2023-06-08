@@ -2,6 +2,9 @@ import { Dialog, Box, TextField, Button, Typography } from "@mui/material";
 import "../css/signin.css";
 import { useState } from "react";
 import authenticateUser from "../sevice/api";
+import { useSignUp } from "./authentication-context";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = ({ open, setOpen }) => {
   const [togglelogin, setToggleLogin] = useState(true);
@@ -18,6 +21,8 @@ const SignIn = ({ open, setOpen }) => {
     password: "",
     mobileNumber: "",
   });
+
+  const { setLoggedinUser } = useSignUp();
 
   const toggleLoginHandler = () => {
     setToggleLogin(false);
@@ -38,113 +43,124 @@ const SignIn = ({ open, setOpen }) => {
 
   const signupHandler = async () => {
     const response = await authenticateUser(signupDetails);
-    if(!response) return;
+    // console.log(statusText, " ", data);
+    if (!response) {
+      toast("somthing Wrong with Server...");
+      return;
+    }
+    setLoggedinUser(response.data.message.username);
     dialogBoxHandler();
-  }
+    toast.success("New User Created...");
+  };
 
   return (
-    <Dialog
-      open={open}
-      onClose={dialogBoxHandler}
-      PaperProps={{ sx: { maxWidth: "unset" } }}
-    >
-      <Box className="dialog-box">
-        <Box className="left-part">
-          <h2 style={{ color: "white" }}>{leftPart.header}</h2>
-          <p>{leftPart.description}</p>
+    <>
+      <Dialog
+        open={open}
+        onClose={dialogBoxHandler}
+        PaperProps={{ sx: { maxWidth: "unset" } }}
+      >
+        <Box className="dialog-box">
+          <Box className="left-part">
+            <h2 style={{ color: "white" }}>{leftPart.header}</h2>
+            <p>{leftPart.description}</p>
+          </Box>
+          {togglelogin ? (
+            <Box className="right-part">
+              <TextField label="Enter Email/Mobile number" variant="standard" />
+              <TextField
+                style={{ marginTop: "10px" }}
+                label="Enter Password"
+                variant="standard"
+              />
+              <Typography
+                style={{
+                  fontSize: "12px",
+                  marginTop: "2rem",
+                  marginBottom: "12px",
+                  color: "#878787",
+                }}
+              >
+                By continuing, you agree to Flipkart's Terms of Use and Privacy
+                Policy.
+              </Typography>
+              <Button variant="contained">Login</Button>
+              <Typography style={{ textAlign: "center", marginTop: "1rem" }}>
+                OR
+              </Typography>
+              <Button className="register-otp-btn" variant="contained">
+                Request OTP
+              </Button>
+              <Typography id="signup-text" onClick={toggleLoginHandler}>
+                New to Flipkart? Create an account
+              </Typography>
+            </Box>
+          ) : (
+            <Box className="right-part">
+              <TextField
+                label="Enter Firstname"
+                onChange={(e) => {
+                  signupDetailsHandler(e);
+                }}
+                name="firstname"
+                variant="standard"
+              />
+              <TextField
+                style={{ marginTop: "10px" }}
+                onChange={(e) => {
+                  signupDetailsHandler(e);
+                }}
+                label="Enter lastname"
+                name="lastname"
+                variant="standard"
+              />
+              <TextField
+                style={{ marginTop: "10px" }}
+                onChange={(e) => {
+                  signupDetailsHandler(e);
+                }}
+                label="Enter Username"
+                name="username"
+                variant="standard"
+              />
+              <TextField
+                style={{ marginTop: "10px" }}
+                onChange={(e) => {
+                  signupDetailsHandler(e);
+                }}
+                label="Enter Email"
+                type="email"
+                name="email"
+                variant="standard"
+              />
+              <TextField
+                style={{ marginTop: "10px" }}
+                onChange={(e) => {
+                  signupDetailsHandler(e);
+                }}
+                label="Enter Password"
+                type="password"
+                name="password"
+                variant="standard"
+              />
+              <TextField
+                style={{ marginTop: "10px" }}
+                onChange={(e) => {
+                  signupDetailsHandler(e);
+                }}
+                label="Enter Mobile number"
+                name="mobileNumber"
+                variant="standard"
+              />
+              <Button variant="contained" onClick={signupHandler}>
+                Continue
+              </Button>
+            </Box>
+          )}
         </Box>
-        {togglelogin ? (
-          <Box className="right-part">
-            <TextField label="Enter Email/Mobile number" variant="standard" />
-            <TextField
-              style={{ marginTop: "10px" }}
-              label="Enter Password"
-              variant="standard"
-            />
-            <Typography
-              style={{
-                fontSize: "12px",
-                marginTop: "2rem",
-                marginBottom: "12px",
-                color: "#878787",
-              }}
-            >
-              By continuing, you agree to Flipkart's Terms of Use and Privacy
-              Policy.
-            </Typography>
-            <Button variant="contained">Login</Button>
-            <Typography style={{ textAlign: "center", marginTop: "1rem" }}>
-              OR
-            </Typography>
-            <Button className="register-otp-btn" variant="contained">
-              Request OTP
-            </Button>
-            <Typography id="signup-text" onClick={toggleLoginHandler}>
-              New to Flipkart? Create an account
-            </Typography>
-          </Box>
-        ) : (
-          <Box className="right-part">
-            <TextField
-              label="Enter Firstname"
-              onChange={(e) => {
-                signupDetailsHandler(e);
-              }}
-              name="firstname"
-              variant="standard"
-            />
-            <TextField
-              style={{ marginTop: "10px" }}
-              onChange={(e) => {
-                signupDetailsHandler(e);
-              }}
-              label="Enter lastname"
-              name="lastname"
-              variant="standard"
-            />
-            <TextField
-              style={{ marginTop: "10px" }}
-              onChange={(e) => {
-                signupDetailsHandler(e);
-              }}
-              label="Enter Username"
-              name="username"
-              variant="standard"
-            />
-            <TextField
-              style={{ marginTop: "10px" }}
-              onChange={(e) => {
-                signupDetailsHandler(e);
-              }}
-              label="Enter Email"
-              type="email"
-              name="email"
-              variant="standard"
-            />
-            <TextField
-              style={{ marginTop: "10px" }}
-              onChange={(e) => {
-                signupDetailsHandler(e);
-              }}
-              label="Enter Password"
-              type="password"
-              name="password"
-              variant="standard"
-            />
-            <TextField
-              style={{ marginTop: "10px" }}
-              onChange={(e) => {
-                signupDetailsHandler(e);
-              }}
-              label="Enter Mobile number"
-              name="mobileNumber"
-              variant="standard"
-            />
-            <Button variant="contained" onClick={signupHandler} >Continue</Button>
-          </Box>
-        )}
-      </Box>
-    </Dialog>
+      </Dialog>
+      <ToastContainer />
+    </>
   );
 };
 
