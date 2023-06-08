@@ -1,13 +1,14 @@
 import { Dialog, Box, TextField, Button, Typography } from "@mui/material";
 import "../css/signin.css";
 import { useState } from "react";
-import authenticateUser from "../sevice/api";
+import authenticateUser, { authenticateLoginUser } from "../sevice/api";
 import { useSignUp } from "./authentication-context";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const SignIn = ({ open, setOpen }) => {
   const [togglelogin, setToggleLogin] = useState(true);
+  const [loginError, setLoginError] = useState("");
   const [leftPart, setLeftPart] = useState({
     header: "Login",
     description: "Get access to your Orders, Wishlist and Recommendations",
@@ -20,6 +21,11 @@ const SignIn = ({ open, setOpen }) => {
     email: "",
     password: "",
     mobileNumber: "",
+  });
+
+  const [loginDetails, setLoginDetails] = useState({
+    loginUsername: "",
+    loginPassword: "",
   });
 
   const { setLoggedinUser } = useSignUp();
@@ -41,9 +47,13 @@ const SignIn = ({ open, setOpen }) => {
     setSignupDetails({ ...signupDetails, [e.target.name]: e.target.value });
   };
 
+  const handleLoginDetails = (ev) => {
+    setLoginError("");
+    setLoginDetails({ ...loginDetails, [ev.target.name]: ev.target.value });
+  };
+
   const signupHandler = async () => {
     const response = await authenticateUser(signupDetails);
-    // console.log(statusText, " ", data);
     if (!response) {
       toast("somthing Wrong with Server...");
       return;
@@ -51,6 +61,18 @@ const SignIn = ({ open, setOpen }) => {
     setLoggedinUser(response.data.message.username);
     dialogBoxHandler();
     toast.success("New User Created...");
+  };
+
+  const handleLogin = async () => {
+    const response = await authenticateLoginUser(loginDetails);
+    console.log(response);
+    if (response.status === 200) {
+      setLoggedinUser(response.data.message.username);
+      dialogBoxHandler();
+    } else if (response.status === 401) {
+      setLoginError(response.data.message);
+    }
+    return;
   };
 
   return (
@@ -67,12 +89,22 @@ const SignIn = ({ open, setOpen }) => {
           </Box>
           {togglelogin ? (
             <Box className="right-part">
-              <TextField label="Enter Email/Mobile number" variant="standard" />
               <TextField
+                required="true"
+                name="loginUsername"
+                onChange={(ev) => handleLoginDetails(ev)}
+                label="Enter Email/Mobile number"
+                variant="standard"
+              />
+              <TextField
+                required="true"
+                name="loginPassword"
+                onChange={(ev) => handleLoginDetails(ev)}
                 style={{ marginTop: "10px" }}
                 label="Enter Password"
                 variant="standard"
               />
+              <Typography className="login-error">{loginError}</Typography>
               <Typography
                 style={{
                   fontSize: "12px",
@@ -84,7 +116,10 @@ const SignIn = ({ open, setOpen }) => {
                 By continuing, you agree to Flipkart's Terms of Use and Privacy
                 Policy.
               </Typography>
-              <Button variant="contained">Login</Button>
+
+              <Button variant="contained" onClick={handleLogin}>
+                Login
+              </Button>
               <Typography style={{ textAlign: "center", marginTop: "1rem" }}>
                 OR
               </Typography>

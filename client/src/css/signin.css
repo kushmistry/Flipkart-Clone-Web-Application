@@ -65,4 +65,12 @@
     color: #2874f0 !important;
     box-shadow: 0 2px 4px 0 rgb(0 0 0/ 20%) !important;
     margin-top: 10px !important;
+    /* margin-bottom: 16px !important; */
+}
+
+.login-error {
+    color: red;
+    font-size: 12px !important;
+    margin-top: 5px !important;
+    margin-bottom: -10px !important;
 }
